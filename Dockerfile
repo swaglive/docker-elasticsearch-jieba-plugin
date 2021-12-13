@@ -7,7 +7,6 @@ ARG     VERSION
 RUN     echo $VERSION && wget -O- https://github.com/sing1ee/elasticsearch-jieba-plugin/archive/v$VERSION.tar.gz | tar -xzv && \
         cd elasticsearch-jieba-plugin-$VERSION && \
         gradle clean pz && \
-        # ./gradlew clean pz
         mkdir -p /usr/share/elasticsearch/plugins/jieba && \
         unzip -d /usr/share/elasticsearch/plugins/jieba build/distributions/elasticsearch-jieba-plugin-$VERSION.zip
 
