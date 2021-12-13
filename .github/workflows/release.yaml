@@ -10,6 +10,12 @@ jobs:
       contents: read
       packages: write
 
+    strategy:
+      matrix:
+        version:
+        - "7.0.0"
+        - "7.7.0"
+
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -47,11 +53,16 @@ jobs:
         images: |
           ghcr.io/swaglive/elasticsearch-jieba-plugin
           asia-docker.pkg.dev/swag-2c052/swaglive/elasticsearch-jieba-plugin
+        tags: |
+          type=sha
+          type=raw,${{ matrix.version }}
 
     - name: Build
       uses: docker/build-push-action@v2
       with:
         context: .
+        build-args: |-
+          VERSION=${{ matrix.version }}
         push: ${{ steps.push-to-registry.outputs.match != '' }}
         labels: ${{ steps.meta.outputs.labels }}
         tags: ${{ steps.meta.outputs.tags }}
